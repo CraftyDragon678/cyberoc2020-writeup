@@ -416,3 +416,13 @@ v29에 결과가 저장되어있다.
 [여기](https://software.intel.com/sites/landingpage/IntrinsicsGuide)나
 [여기](https://docs.microsoft.com/ko-kr/cpp/intrinsics/x64-amd64-intrinsics-list?view=vs-2019)에서
 볼 수 있다.
+
+* _mm_loadl_epi64(MOVQ): __int128을 xmm레지스터로 옮긴다.
+* _mm_unpacklo_epi8(PUNPCKLBW): 끼워넣는,,, 그런거다. 다음 이미지를 참고
+![PUNPCKLBW](https://www.officedaytime.com/simd512e/simdimg/unpacklo_byte_sse.png)
+* _mm_add_epi16(PADDW): 말 그대로 더하는 거
+* _mm_srli_si128(PSRLDQ): 8byte 단위로 쉬프트 연산을 수행한다.
+* _mm_cvtsi128_si32(MOVD): __int16을 xmm레지스터에서 옮긴다.
+
+결국 동적 디버깅을 해보거나, 자세히 분석해보면
+받아온 키 8개를 16bit 단위로 다 더하는 것이라고 보면 된다.
