@@ -203,3 +203,50 @@ sprintf(v3, "%04hX-%04hX", v20, v22);
 첫번째 두번째 부분에서 만들어진 v10, v11과 v19라는 변수를 가지고 만드는데,
 `v10 & 0x100`을 한 결과가 0이면 `{두번째 hex}-{첫번째 hex}` 꼴이 되고
 0이 아니면 `{첫번째 hex}-{두번째 hex}`꼴이 된다.
+
+## 첫번째 부분
+
+> [Doc](https://docs.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getsystemtimeasfiletime)
+<- 한번 읽고 오는 것도?
+
+FILETIME 구조체 포인터를 받아서 현재 시스템 시간을 넣어준다는 그 소리
+
+```c++
+sscanf(v4, "%hx-%hx-%hx", &v37, &v38, &v39);
+GetSystemTimeAsFileTime(&SystemTimeAsFileTime);
+v10 = (*&SystemTimeAsFileTime - 116444736000000000i64) / 6000000000i64;
+v11 = v39 ^ v38 ^ v37 * (unsigned __int8)v10;
+```
+
+딱 봐도 수를 계산하는게 복잡해 보인다.
+
+그래서 똑같은 코드를 직접 visual c++로 만들어서 돌려보았다.
+
+```c++
+#include <windows.h>
+#include <stdio.h>
+
+int main(void) {
+	FILETIME a;
+	GetSystemTimeAsFileTime(&a);
+	long long b = *((long long*)&a);
+	b = (b - 116444736000000000l) / 6000000000l;
+	printf("%lld\n", b);
+}
+```
+문제에서 나온 `2020-09-11 20:17:15+0900`으로 맞춰놓고 돌리니 `2666371`이 나왔다.
+
+고유 번호 일부분이 주어지고 시각을 아니깐
+주어진 바이너리에서 v37, v38, v10의 값은 아는 상태이다.
+
+이때 `v10 & 0x100`은 0이 아니므로 결과값인 v11도 0x6a30이 되어야 함을 알고 있다.
+
+xor 역 연산을 하면 다음과 같은 코드로 구할 수 있다.
+
+```python
+tttt = 2666371
+goyu = [0xb1c2, 0x4ea2]
+print(hex(((goyu[1] ^ goyu[0] * (tttt & 0xff)) ^ 0x6a30) & 0xffff))
+```
+
+세번째 고유번호는 D2D4임을 알 수 있다.
