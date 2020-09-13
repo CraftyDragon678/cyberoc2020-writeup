@@ -26,6 +26,7 @@ KST 2020-09-11 오후 8:17:15 6A30-1099
 
 # 생성 함수 찾기
 
+## find WinMain
 일단 visual c++을 사용한 프로그램이기 때문에,
 이에 맞춰서 main함수를 찾아야 한다.
 
@@ -43,5 +44,22 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 이 함수는 단순히 창을 생성하고 창 제목을 변경하는 등의 역할을 한다.
 그 안에 `lpfnWndProc` 라는 메시지 처리 함수를 지정하는 부분이 있다.
 
+## lpfnWndProc
 `.140001ea0` 함수에서는 폼을 생성하는 코드, 종료하는 코드도 있는데,
 여기서 가장 중요한 생성 함수를 눌렀을 때의 코드가 있다.
+
+```c++
+::hWnd = CreateWindowExW(0, L"Edit", &word_140004520, 0x50800000u, 90, 10, 200, 20, hWndParent, 0i64, v7, 0i64);
+```
+```c++
+qword_140006798 = CreateWindowExW(0, L"Edit", &word_140004520, 0x50800000u, 90, 50, 200, 20, hWndParent, 0i64, v9, 0i64);
+```
+이 두 부분이 입력 폼을 만드는 부분이다.
+
+```c++
+CreateWindowExW(0, L"Button", "생성", 0x50000000u, 230, 80, 60, 25, hWndParent, (HMENU)3, v10, 0i64);
+```
+이 부분은 생성 버튼을 만드는 부분이다.
+
+아래쪽에 a2 == 0x111, a3 == 3 인 곳에 `.140001b90`을 호출하는데
+이것이 바로 생성 버튼을 누를 때 실행되는 함수이다.
