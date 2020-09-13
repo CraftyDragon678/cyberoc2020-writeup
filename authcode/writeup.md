@@ -66,3 +66,10 @@ CreateWindowExW(0, L"Button", "생성", 0x50000000u, 230, 80, 60, 25, hWndParent
 
 다음 단계로 넘어가기 전에 자동으로 변수명이 지정된
 `hWnd`는 `goyu_edit`으로, qword_140006798은 `bimil_edit`으로 바꿔준다.
+
+# 생성 함수 분석
+
+```c++
+if ( GetWindowTextLengthA(goyu_edit) == 14 )
+```
+고유번호의 길이는 information.txt에서 봤듯이 14자리여야한다
