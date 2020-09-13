@@ -184,3 +184,22 @@ memcpy(&Dst, (const void *)v6, v5);
 * `.140001900` -> sscanf
 * `.1400018a0` -> sprintf
 
+
+## 세번째 부분
+세번째 부분을 먼저 보고 나머지를 분석하는게 도움이 될 것이다.
+
+```c++
+v3 = (char *)malloc(0xAui64);
+v20 = (unsigned int)v11;
+v21 = v10 & 0x100;
+v22 = (unsigned int)v19;
+if ( !v21 )
+    v22 = (unsigned int)v20;
+if ( !v21 )
+    v20 = (unsigned int)v19;
+sprintf(v3, "%04hX-%04hX", v20, v22);
+```
+
+첫번째 두번째 부분에서 만들어진 v10, v11과 v19라는 변수를 가지고 만드는데,
+`v10 & 0x100`을 한 결과가 0이면 `{두번째 hex}-{첫번째 hex}` 꼴이 되고
+0이 아니면 `{첫번째 hex}-{두번째 hex}`꼴이 된다.
