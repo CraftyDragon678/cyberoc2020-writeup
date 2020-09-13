@@ -69,7 +69,32 @@ CreateWindowExW(0, L"Button", "생성", 0x50000000u, 230, 80, 60, 25, hWndParent
 
 # 생성 함수 분석
 
+## 제한 (invalid format이 뜨지 않게)
+
+그래프를 보면 대충 감이 오겠지만, 안쪽에서 분기문 조건에 안 맞거나
+break이 이루어지면 invalid format이 뜬다.
+
+그래서 조건을 몇개 보면 다음과 같다.
+
+### 고유번호 길이
 ```c++
 if ( GetWindowTextLengthA(goyu_edit) == 14 )
 ```
 고유번호의 길이는 information.txt에서 봤듯이 14자리여야한다
+
+### 고유번호 포맷 (대쉬)
+```c++
+if ( v4[4] == 45 && v4[9] == 45 )
+```
+5번째와 10번째 글자는 45(-)여야한다.
+
+### 고유번호 포맷 (16진수)
+```c++
+if ( v8 != 4 && v8 != 9 )
+{
+    v9 = v4[v8];
+    if ( (unsigned __int8)(v9 - 48) > 9u && (unsigned __int8)(v9 - 65) > 5u )
+        break;
+}
+```
+숫자가 이거나 A~F중 하나여야한다.
