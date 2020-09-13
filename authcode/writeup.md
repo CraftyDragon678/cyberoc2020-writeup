@@ -403,3 +403,16 @@ key[7-a] = tmp
 이 부분은 예외 처리를 해주는 게 나을 것 같다.
 
 함수 마지막에는 원래 키 값에 새로 만든 키 값을 더한다.
+
+### `.140001760` 정리
+_result에다가 strange 함수에서 나온 key값을 역으로 넣어준다.
+
+### 다시 generate 함수
+v29에 결과가 저장되어있다.
+
+여기서 hex-ray가 xmm을 위한 어셈블리 명령어를 amd64 내장함수로 바꾼다.
+
+자세한 내용은
+[여기](https://software.intel.com/sites/landingpage/IntrinsicsGuide)나
+[여기](https://docs.microsoft.com/ko-kr/cpp/intrinsics/x64-amd64-intrinsics-list?view=vs-2019)에서
+볼 수 있다.
